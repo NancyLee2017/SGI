@@ -1,5 +1,7 @@
 #!/usr/bin/perl -w
-¯
+
+#This is only used for Git testing.
+
 die "perl $0 <report.tsv.list> <var.filter.xls>\n" unless (@ARGV ==2);
 open IN,"$ARGV[0]" or die "$ARGV[0] Error!\n";
 open OT,">$ARGV[1]" or die "$ARGV[1] Error!\n";
