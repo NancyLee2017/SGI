@@ -1,0 +1,1 @@
+/data/home/tinayuan/Database/CLS_report/all_clin_sig_variants.txt

@@ -1,0 +1,1 @@
+perl -ne 'chomp;@a=split/\//; $tsv=$a[-1]; @b=split/\./,$tsv; $index=$b[1];$libID=(split/_/,$b[0])[0];@d=split/_/,$a[3];$path="/data/SeqStore/pgm_zp/20".$d[1]."_".$d[3]; print "$libID\t$index\t$path\n";' <tsv.list >sumup4oncoDNA.input
