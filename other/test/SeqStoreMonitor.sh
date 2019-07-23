@@ -49,6 +49,8 @@ function DeMutilplex() {
 	else
 		sh $1/demultiplex.sh
 #	ls -l $1/demultiplex.sh #for test only
+	fi
+
 	if [ $? -eq 0 ];then
 		date +%T
 		echo "$1 demultiplexing is done!"
