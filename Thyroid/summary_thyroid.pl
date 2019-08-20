@@ -28,6 +28,8 @@ my (%path,%sum_site,%qc_dup);
 
 my @key_gene=("AKT1", "BRAF", "NRAS", "KRAS", "HRAS", "RET", "PTEN", "GNAS", "TERT", "TP53");
 
+my ($BRAF_sum005,$BRAF_sum002,$BRAF_sum_all)=(0,0,0);
+
 while(<IN>){
     chomp;
     my $fusion=$_; $fusion=~s/report\.clinsig\.filtered\.tsv/fusion_result.tsv/;
@@ -68,13 +70,16 @@ while(<IN>){
 	    $posi{$k}+=1;
 	    $a[6]=sprintf "%.3f",$a[6];
 	    $hash{$k}{$id}=$a[6]."|".$a[7];
-            if($clin_sig=~/pathogenic/i){
+            
+	    if($clin_sig=~/pathogenic/i){
 	    my $sumup_key=join " ",$gene,$pos,$exon,$hgv_sc,$hgv_sp,$a[6],$clin_sig,";";#sumup表中变异信息分隔
 	    $sum_site{$id}=$sum_site{$id}.$sumup_key;
 	    }
+	    	    
+	    if(($gene=~/BRAF/)&&($hgv_sp2=~/V\/E/)){$BRAF_sum005+=1;$BRAF_sum_all+=1;} #统计BRAF V600E 出现频次
 	}
 	
-	elsif(($a[8]!~/TSV|Blacklisted|DP_Filter|AltCount|StrandBias|_UTR_|LowQual|\tintron_variant\t|\tsynonymous_variant\t/)&&($a[6]>=0.02)){
+	elsif(($a[8]!~/TSV|Blacklisted|DP_Filter|AltCount|StrandBias|_UTR_|LowQual|\tintron_variant\t|\tsynonymous_variant\t/)&&($a[6]>=0.01)){
 	    if ($a[14]~~@key_gene){ #print "$a[14]\n";
 		$pos=$a[0].":".$a[1];
                 $gene=$a[14];
@@ -96,9 +101,15 @@ while(<IN>){
                 $a[6]=sprintf "%.3f",$a[6];
                 $hash{$k}{$id}=$a[6]."|".$a[7]."|".$a[8];
                 if($clin_sig=~/pathogenic/i){
-		my $sumup_key=join " ",$gene,$pos,$exon,$hgv_sc,$hgv_sp,$a[6],$clin_sig,";";#sumup表中变异信息分隔
-		$sum_site{$id}=$sum_site{$id}.$sumup_key;
+		    my $sumup_key=join " ",$gene,$pos,$exon,$hgv_sc,$hgv_sp,$a[6],$clin_sig,";";#sumup表中变异信息分隔
+		    $sum_site{$id}=$sum_site{$id}.$sumup_key;
 	        }
+
+		if(($gene=~/BRAF/)&&($hgv_sp2=~/V\/E/)){
+		    $BRAF_sum_all+=1;
+		    if($a[6]>=0.02){$BRAF_sum002+=1;}
+		}#统计BRAF V600E 出现频次
+
 	    }
 	}
     }
@@ -184,6 +195,8 @@ foreach my $k(sort keys %qc_tl){
 	else {print OT " \t";}
     } print OT "\n";
 }
+
+print OT "BRAF V600E matrix\nfrequency>=0.05\t$BRAF_sum005\nfrequency0.02-0.05\t$BRAF_sum002\nTotal\t$BRAF_sum_all\n";
 close OT; 
 
 (open OT2,">sumup_filled.xls")||(print "Warning: Can't creat sumup_filled.xls\n");
