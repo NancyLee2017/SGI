@@ -23,11 +23,11 @@ grep -P "\s792\sL" *-M/*.report.filtered.tsv |grep "EGFR" >>KeySites_check.resul
 echo -e "\nEGFR G719S\n" >>KeySites_check.result
 grep -P "\s719\sG/S" *-M/*.report.filtered.tsv |grep "EGFR" >>KeySites_check.result
 echo -e "\nKRAS G12\n" >>KeySites_check.result
-grep -P "\s12\sG/" *-M/*.report.filtered.tsv |grep KRAS
+grep -P "\s12\sG/" *-M/*.report.filtered.tsv |grep "KRAS" >>KeySites_check.result
 echo -e "\nKRAS G13\n" >>KeySites_check.result
-grep -P "\s13\sG/" *-M/*.report.filtered.tsv |grep KRAS
+grep -P "\s13\sG/" *-M/*.report.filtered.tsv |grep "KRAS" >>KeySites_check.result
 echo -e "\nBRAF V600E\n" >>KeySites_check.result
-grep -P "\s600\sV/E" *-M/*.report.filtered.tsv |grep BRAF
+grep -P "\s600\sV/E" *-M/*.report.filtered.tsv |grep "BRAF" >>KeySites_check.result
 
 
 
