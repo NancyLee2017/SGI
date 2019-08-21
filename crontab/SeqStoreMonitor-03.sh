@@ -2,8 +2,8 @@
 . /etc/profile
 PATH=/etc:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
 
-Monitor="/mnt/rawdata/NextSeq500-1"
-Seqstore="/data/SeqStore/nextseq_01"
+Monitor="/mnt/rawdata/NextSeq500-3"
+Seqstore="/data/SeqStore/nextseq_03"
 Log="$Seqstore/dir.log"
 
 function CheckRTA() {
@@ -105,7 +105,7 @@ if [ -f "$Log" ];then
 					if [ $? -eq 1 ];then
 				#		echo "$Path2 demutilplexing successed!"
 						echo "$folder" >>$Seqstore/dir.log
-				#		chmod -R 777 $Seqstore/$folder/
+						chmod -R 777 $Seqstore/$folder/
 					fi
 				else
 					continue

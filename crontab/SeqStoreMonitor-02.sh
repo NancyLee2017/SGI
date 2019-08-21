@@ -2,8 +2,8 @@
 . /etc/profile
 PATH=/etc:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
 
-Monitor="/mnt/rawdata/NextSeq500-1"
-Seqstore="/data/SeqStore/nextseq_01"
+Monitor="/mnt/rawdata/NextSeq500-2"
+Seqstore="/data/SeqStore/nextseq_02"
 Log="$Seqstore/dir.log"
 
 function CheckRTA() {
