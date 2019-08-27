@@ -4,9 +4,9 @@ mkdir Download
 ls $work_path/*-M/*.report.filtered.tsv |perl -ne 'chomp;@a=split/\//;print "cp $_ ./Download/\ncp ./$a[-2]/$a[-2].cnv.tsv ./Download/\ncp ./$a[-2]/$a[-2].coverage.tsv ./Download/\ncp ./$a[-2]/$a[-2].sqm.json ./Download/\ncp ./$a[-2]/$a[-2].fusion_result.tsv ./Download/$a[-2].fusion_result.tsv\n"' >cp.sh
 sh cp.sh
 ls -1 $work_path/*-M/*report.filtered.tsv | perl -ne 'chomp;@t=split/\//;print"$t[-2]=$_\n";' >in.report.filtered.tsv.list
-perl /home/hongyanli/script/ddCAP/combine_chope_tsv.noPASS.v3.2.7.pl in.report.filtered.tsv.list combined_tsv.xls 0.01 id.list
+perl /home/hongyanli/script/ddCAP/combine_chope_tsv.noPASS.v3.2.7.pl in.report.filtered.tsv.list combined_tsv.xls 0.01 id_ontissue.list
 
-perl /home/hongyanli/script/ddCAP/find_CNV.pl id.list $work_path
+#perl /home/hongyanli/script/ddCAP/find_CNV.pl id_ontissue.list $work_path
 
 echo -e "EGFR exon20 indel\n" >KeySites_check.result
 grep -P "\s20/" *-M/*.report.filtered.tsv |grep "EGFR" |grep "indel" >>KeySites_check.result
