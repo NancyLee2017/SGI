@@ -2,8 +2,8 @@
 . /etc/profile
 PATH=/etc:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
 
-Monitor="/mnt/rawdata/NextSeq500-3"
-Seqstore="/data/SeqStore/nextseq_03"
+Monitor="/mnt/rawdata/NextSeq500-2"
+Seqstore="/data/SeqStore/nextseq_02"
 Log="$Seqstore/dir.log"
 
 function CheckRTA() {
@@ -21,7 +21,7 @@ function CheckSH() {
 	SeqPath=$2
 	cd $SeqPath
 	if [ ! -f "demultiplex.sh" ];then
-		perl /data/home/hongyanli/script/other/test/generate_demultiplex_script.v2.1.pl $1 > $SeqPath/demultiplex.sh
+		perl /data/home/hongyanli/script/crontab/generate_demultiplex_script.auto.pl $1 > $SeqPath/demultiplex.sh
 		if [ `cat "$SeqPath/demultiplex.sh" |wc -l` -ge 3 ];then 
 			echo "Creat $SeqPath/demultiplex.sh"
 			return 1
@@ -44,7 +44,7 @@ function CheckSH() {
 
 function DeMutilplex() {
 	cd $1
-	if [-f $1/demultiplex.sh.o];then
+	if [ -f $1/demultiplex.sh.o ];then
 		echo "$1 demultiplexing may be done before!"
 	else
 		sh $1/demultiplex.sh
@@ -71,13 +71,17 @@ fi
 
 if [ -f "$Log" ];then
 	ls -F $Monitor |grep '/$' |sort >$Seqstore/dir_change.log
-#	cat $Log |uniq |sort >$Log
 	Diff=`diff $Seqstore/dir_change.log $Seqstore/dir.log |grep '<' |sed 's/<//g'| sed 's/\s//g'`
 	if [[ $Diff ]];then
 		echo "Detected new folder:"
 		echo "$Diff"
 		for folder in $Diff
 		do
+			Path1="$Monitor/$folder"
+			Path2="$Seqstore/$folder"
+			SeqDate=`echo $Diff | cut -d _ -f 1`
+			Sequencer=`echo $Monitor | cut -d / -f 4 | sed 's/_//' `
+
 			if [ ! -d "$Seqstore/$folder" ];then
 				echo "Warning: $Seqstore/$folder not exist, make it now!"
 				mkdir $Seqstore/$folder
@@ -85,14 +89,27 @@ if [ -f "$Log" ];then
 				continue;
 			fi
 
-			if [ -f "$Seqstore/$folder/demultiplex.sh.o" ];then
+			if [ -f "$Path2/demultiplex.sh.o" ];then
 				echo "Warning: $Seqstore/$folder  This folder is demultiplexed!"
 				echo "$folder" >>$Seqstore/dir.log
 				continue
 			fi
+			
+			if [ -f "$Path2/sequencer.info" ];then
+				cd $Path2 
+				perl /home/hongyanli/script/crontab/Do_SampleSheet_dumutiplexing.pl $Path2/sequencer.info
+			fi
+			
+			if [ -f "$Path2/ACE.seqinfo.${SeqDate}_${Sequencer}.xls" ];then
+				cd $Path2
+				perl /data/home/tinayuan/bin/ACE/generate_files_4ACE_run.v2.2.pl "$Path2/ACE.seqinfo.${SeqDate}_${Sequencer}.xls" "${SeqDate}_${Sequencer}"
+			fi
 
-			Path1="$Monitor/$folder"
-			Path2="$Seqstore/$folder"
+			if [[ ! -f "$Path2/sequencer.info" ]] && [[ ! -f "$Path2/ACE.seqinfo.${SeqDate}_${Sequencer}.xls" ]];then
+				echo "Warning: No sequencer.info under $Seqstore/$folder "
+				continue
+			fi
+
 			CheckRTA $Path1
 			Res1=$?
 			if [ $Res1 -eq 1 ];then
@@ -103,9 +120,15 @@ if [ -f "$Log" ];then
 					echo "Start demutilplexing..."
 					DeMutilplex $Path2
 					if [ $? -eq 1 ];then
-				#		echo "$Path2 demutilplexing successed!"
+						echo "$Path2 demutilplexing successed!"
 						echo "$folder" >>$Seqstore/dir.log
-						chmod -R 777 $Seqstore/$folder/
+#						chmod -R 777 $Seqstore/$folder/
+						cd $Seqstore/$folder
+						if [ `ls -1 $Path2 |grep 'ACE' |wc -l ` gt 1 ];then
+							echo "There are ACE samples in $Path2"	
+						else
+							perl /data/home/hongyanli/script/crontab/sequencer_info_analysis.pl sequencer.info $Path2
+						fi
 					fi
 				else
 					continue
