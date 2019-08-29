@@ -2,7 +2,7 @@
 
 use utf8;
 
-die "perl $0 <sumup.lines> <id.list>\n" unless (@ARGV ==2);
+die "perl $0 <sumup.lines>\n" unless (@ARGV ==1);
 
 my %hash;
 #open IN, "$ARGV[0]" or die "Error! Cannot open $ARGV[0]\n";
@@ -122,10 +122,12 @@ while(<IN>){
 }
 close IN;
 
+=pod
 open IN2,"$ARGV[1]" or die "Error! Cannot open $ARGV[1]\n";
 while (<IN2>){
 	chomp;
 	my $tsv_name=$_.".tsv";
 	if (exists $hash{$_}){next;}
 	else {`touch $tsv_name`} 
-}close IN2;
+}
+=cut
