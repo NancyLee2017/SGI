@@ -4,7 +4,7 @@ PATH=/home/athurvagore/anaconda/envs/pipeline/bin:/data/home/jiecui/software/jdk
 #set -i
 
 ###Personal Config Part
-Monitor="/data/SeqStore/nextseq_02"
+Monitor="/data/SeqStore/nextseq_03"
 Workspace="/home/hongyanli/workspace/CLS/ddCAPonTissus/"
 Pipeline="ontissue"
 #Pipeline Options: "ontissue","ddcapv3","thyroid"
