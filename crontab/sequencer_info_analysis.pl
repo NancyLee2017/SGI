@@ -3,7 +3,7 @@
 use strict;
 use utf8;
 
-die "perl $0 <sequencer.info> <working_dir> \n" unless (@ARGV==2);
+die "perl $0 <CLS.seqinfo.xls> <working_dir> \n" unless (@ARGV==2);
 
 my $dir=$ARGV[1];
 #eg:/data/SeqStore/nextseq_03/190817_TPNB500270AR_0134_AHMLMFAFXY

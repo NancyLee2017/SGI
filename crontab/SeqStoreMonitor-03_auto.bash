@@ -5,6 +5,7 @@ PATH=/etc:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
 Monitor="/mnt/rawdata/NextSeq500-3"
 Seqstore="/data/SeqStore/nextseq_03"
 Log="$Seqstore/dir.log"
+Input="CLS.seqinfo.xls"
 
 function CheckRTA() {
 	if [ -f "$1/RTAComplete.txt" ];then 
@@ -92,11 +93,11 @@ if [ -f "$Log" ];then
 				continue
 			fi
 			
-			if [ -f "$Path2/sequencer.info" ];then
+			if [ -f "$Path2/$Input" ];then
 				cd $Path2 
-				perl /home/hongyanli/script/crontab/Do_SampleSheet_dumutiplexing.pl $Path2/sequencer.info
+				perl /home/hongyanli/script/crontab/Do_SampleSheet_dumutiplexing.pl ${Path2}/${Input}
 			else
-				echo "Warning: $Seqstore/$folder/sequencer.info not exist"
+				echo "Warning: $Seqstore/$folder/$Input not exist"
 				continue
 			fi
 
@@ -114,7 +115,7 @@ if [ -f "$Log" ];then
 						echo "$folder" >>$Seqstore/dir.log
 						chmod -R 777 $Seqstore/$folder/
 						cd $Seqstore/$folder
-						perl /data/home/hongyanli/script/crontab/sequencer_info_analysis.pl sequencer.info $Path2
+						perl /data/home/hongyanli/script/crontab/sequencer_info_analysis.pl $Input $Path2
 					fi
 				else
 					continue

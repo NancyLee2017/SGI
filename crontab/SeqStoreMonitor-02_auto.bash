@@ -5,6 +5,7 @@ PATH=/etc:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
 Monitor="/mnt/rawdata/NextSeq500-2"
 Seqstore="/data/SeqStore/nextseq_02"
 Log="$Seqstore/dir.log"
+Input="CLS.seqinfo.xls"
 
 function CheckRTA() {
 	if [ -f "$1/RTAComplete.txt" ];then 
@@ -80,7 +81,7 @@ if [ -f "$Log" ];then
 			Path1="$Monitor/$folder"
 			Path2="$Seqstore/$folder"
 			SeqDate=`echo $Diff | cut -d _ -f 1`
-			Sequencer=`echo $Monitor | cut -d / -f 4 | sed 's/_//' `
+			Sequencer=`echo $Seqstore | cut -d / -f 4 | sed 's/_//' `
 
 			if [ ! -d "$Seqstore/$folder" ];then
 				echo "Warning: $Seqstore/$folder not exist, make it now!"
@@ -95,18 +96,18 @@ if [ -f "$Log" ];then
 				continue
 			fi
 			
-			if [ -f "$Path2/sequencer.info" ];then
+			if [ -f "$Path2/$Input" ];then
 				cd $Path2 
-				perl /home/hongyanli/script/crontab/Do_SampleSheet_dumutiplexing.pl $Path2/sequencer.info
+				perl /home/hongyanli/script/crontab/Do_SampleSheet_dumutiplexing.pl ${Path2}/${Input}
 			fi
-			
+#			echo "ACE.seqinfo.${SeqDate}_${Sequencer}.xls"	#only for test
 			if [ -f "$Path2/ACE.seqinfo.${SeqDate}_${Sequencer}.xls" ];then
 				cd $Path2
 				perl /data/home/tinayuan/bin/ACE/generate_files_4ACE_run.v2.2.pl "$Path2/ACE.seqinfo.${SeqDate}_${Sequencer}.xls" "${SeqDate}_${Sequencer}"
 			fi
 
-			if [[ ! -f "$Path2/sequencer.info" ]] && [[ ! -f "$Path2/ACE.seqinfo.${SeqDate}_${Sequencer}.xls" ]];then
-				echo "Warning: No sequencer.info under $Seqstore/$folder "
+			if [[ ! -f "$Path2/$Input" ]] && [[ ! -f "$Path2/ACE.seqinfo.${SeqDate}_${Sequencer}.xls" ]];then
+				echo "Warning: No sequencer_info file under $Seqstore/$folder "
 				continue
 			fi
 
@@ -127,7 +128,7 @@ if [ -f "$Log" ];then
 						if [ `ls -1 $Path2 |grep 'ACE' |wc -l ` gt 1 ];then
 							echo "There are ACE samples in $Path2"	
 						else
-							perl /data/home/hongyanli/script/crontab/sequencer_info_analysis.pl sequencer.info $Path2
+							perl /data/home/hongyanli/script/crontab/sequencer_info_analysis.pl $Input $Path2
 						fi
 					fi
 				else
