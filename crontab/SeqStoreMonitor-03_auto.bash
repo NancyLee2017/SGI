@@ -98,7 +98,7 @@ if [ -f "$Log" ];then
 				perl /home/hongyanli/script/crontab/Do_SampleSheet_dumutiplexing.pl ${Path2}/${Input}
 			else
 				echo "Warning: $Seqstore/$folder/$Input not exist"
-				continue
+#				continue
 			fi
 
 			CheckRTA $Path1

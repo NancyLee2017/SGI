@@ -100,7 +100,7 @@ if [ -f "$Log" ];then
 				cd $Path2 
 				perl /home/hongyanli/script/crontab/Do_SampleSheet_dumutiplexing.pl ${Path2}/${Input}
 			fi
-#			echo "ACE.seqinfo.${SeqDate}_${Sequencer}.xls"	#only for test
+			
 			if [ -f "$Path2/ACE.seqinfo.${SeqDate}_${Sequencer}.xls" ];then
 				cd $Path2
 				perl /data/home/tinayuan/bin/ACE/generate_files_4ACE_run.v2.2.pl "$Path2/ACE.seqinfo.${SeqDate}_${Sequencer}.xls" "${SeqDate}_${Sequencer}"
@@ -108,7 +108,7 @@ if [ -f "$Log" ];then
 
 			if [[ ! -f "$Path2/$Input" ]] && [[ ! -f "$Path2/ACE.seqinfo.${SeqDate}_${Sequencer}.xls" ]];then
 				echo "Warning: No sequencer_info file under $Seqstore/$folder "
-				continue
+#				continue
 			fi
 
 			CheckRTA $Path1

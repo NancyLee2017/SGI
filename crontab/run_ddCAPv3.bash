@@ -1,17 +1,20 @@
 #!/bin/bash
 . /etc/profile
-PATH=/home/athurvagore/anaconda/envs/pipeline/bin:/data/home/jiecui/software/jdk1.8.0_144/bin:/home/tinayuan/bin:/data/home/jiecui/software/jdk1.8.0_144/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/jvm/java-9-oracle/bin:/usr/lib/jvm/java-9-oracle/db/bin 
-#set -i
+PATH=/home/athurvagore/anaconda/envs/pipeline/bin:/home/athurvagore/anaconda/bin:/data/home/jiecui/software/jdk1.8.0_144/bin:/home/tinayuan/bin:/data/home/jiecui/software/jdk1.8.0_144/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/jvm/java-9-oracle/bin:/usr/lib/jvm/java-9-oracle/db/bin 
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
-###Personal Config Part
+####################################################################
+#Personal Config Part
 Monitor="/data/SeqStore/nextseq_03"
 Workspace="/home/tinayuan/Workspace/CLS/ddCAPctDNA_2019/"
-Pipeline="ddcapv3"
-#Pipeline Options: "ontissue","ddcapv3","thyroid"
 Workers=32
+####################################################################
 
-### Function Part
 
+#Pipeline Options: "ontissue","ddcapv3","thyroid"
+Pipeline="ddcapv3"
+
+#Function Part
 function CheckSampleSheet(){
 	if [ -f "$1/samples_file_${Pipeline}.txt" ];then
 		if [ -f $2/samples_file_${Pipeline}.txt ];then
@@ -40,8 +43,8 @@ fi
 
 
 if [ -f "$Log" ];then
-	ls -F $Monitor |grep '/$' |sort >$Workspace/dir_change.log
-	Diff=`diff $Workspace/dir_change.log $Log |grep '<' |sed 's/<//g'| sed 's/\s//g'`
+	ls -F $Monitor |grep '/$' |sort >$Workspace/dir_change_${Sequencer}.log
+	Diff=`diff $Workspace/dir_change_${Sequencer}.log  $Log |grep '<' |sed 's/<//g'| sed 's/\s//g'`
 else
 	echo "$Log not exist! Creat a new one!"
 	ls -F $Monitor |grep '/$' |sort >$Log
@@ -52,7 +55,7 @@ if [[ $Diff ]];then
 	for folder in $Diff
 	do
 		DataPath="$Monitor/$folder"
-		SeqDate=`echo $Diff | cut -d _ -f 1`
+		SeqDate=`echo $folder | cut -d _ -f 1`
 		AnalysisDir="$Workspace/${SeqDate}_${Sequencer}_PE148"
 		if [ ! -d $AnalysisDir ];then
 			mkdir $AnalysisDir
