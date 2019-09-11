@@ -120,37 +120,38 @@ while(<IN>){
 		if($t[6]=~/\//){$t[6]="未提供";}
 		print OT "Physician\t$t[6]\n";
 		if($t[14]=~/^\s/){$t[14]="未提供";}
-		print OT "Diagonosis\t$t[14]\n";
+		print OT "Diagnosis\t$t[14]\n";
 		if($t[16]=~/^\s/){$t[16]="未提供";}
 		if(!$t[16]){$t[16]="未提供";}
-		print OT "Sampling_Date\t$t[16]\n";
-#		print OT "Tumor_Staging_and_Grading\t$t[16]\n";
-		print OT "Sample_Type\t$t[18]\n";
+		print OT "SamplingDate\t$t[16]\n";
+		if ($t[14]=~/期/){print OT "TumorStagingAndGrading\t$t[14]\n";}
+		else{print OT "TumorStagingAndGrading\t\n";}
+		print OT "SpecimenID\t$t[3]\n";
+		print OT "SpecimenType\t$t[18]\n";
 #		if ($t[14]=~/样本来源/){print OT "Sampling_Location\t有\n";}
 #		else{print OT "Sampling_Location\t未提供\n";}
 		if($t[15]=~/^\s/){$t[15]="未提供";}
-		print OT "Sampling_Location\t$t[15]\n";
+		print OT "SpecimenLocation\t$t[15]\n";
 #		print OT "Sampling_Date\t$t[0]\n";
-		print OT "Specimen_Received_Date\t$t[1]\n";
-		print OT "Fam_History\t不确定\n";
-		print OT "Nuc_Iso_Date\t$t[30]\n";
-		print OT "Nuc_Iso_Type\t$t[18]\n";
+		print OT "SpecimenReceivedDate\t$t[1]\n";
+		print OT "FamilyHistory\t不确定\n";
+		print OT "NucIsoDate\t$t[30]\n";
+		print OT "NucIsoType\t$t[18]\n";
 		$t[24]=~s/whole blood//;
-		print OT "Nuc_Iso_Amount\t$t[24]\n";
-		print OT "Nuc_Vol\t100\n";
+		print OT "NucIsoAmount\t$t[24]\n";
+		print OT "NucVol\t100\n";
 		my $nuc_con=($t[26]/100);
-		print OT "Nuc_Con\t$nuc_con\n";
-		print OT "Nuc_Int_Evaluation\t好\n";
-		print OT "Lib_Date\t$t[39]\n";
-		print OT "Lib_Nuc_Amount\t$t[33]\n";
-		print OT "Lib_Con\t$t[37]\n";
-		print OT "Lib_Vol\t40\n";
-		print OT "Insert_Size\t380\n";
-#		print OT "Analysis_Date\t$today\n";
+		print OT "NucCon\t$nuc_con\n";
+		print OT "NucIntEvaluation\t好\n";
+		print OT "LibDate\t$t[39]\n";
+		print OT "LibNucAmount\t$t[33]\n";
+		print OT "LibCon\t$t[37]\n";
+		print OT "LibVol\t40\n";
+		print OT "InsertSize\t380\n";
                 my @date=split/\//,$t[43];
                 $date[-1]=$date[-1]+2;
                 my $report_date=join "/",@date;
-                print OT "Analysis_Date\t$report_date\n";
+                print OT "AnalysisDate\t$report_date\n";
 	}
 	elsif($t[11]=~/Riscare/){#Riskcare53/58内部检测代号
 		print OT "#\n";
@@ -164,37 +165,37 @@ while(<IN>){
 		if($t[6]=~/\//){$t[6]="未提供";}
 		print OT "Physician\t$t[6]\n";
 		if($t[14]=~/^\s/){$t[14]="未提供";}
-		print OT "Diagonosis\t$t[14]\n";
+		print OT "Diagnosis\t$t[14]\n";
 		if(!$t[16]){$t[16]="未提供";}
 		if($t[16]=~/^\s/){$t[16]="未提供";}
 #		print OT "Tumor_Staging_and_Grading\t$t[16]\n";
-		print OT "Sampling_Date\t$t[16]\n";
-		print OT "Sample_Type\t$t[18]\n";
+		print OT "SamplingDate\t$t[16]\n";
+		print OT "SpecimenID\t$t[3]\n";
+		print OT "SpecimenType\t$t[18]\n";
 		if($t[15]=~/^\s/){$t[15]="未提供";}
-		print OT "Sampling_Location\t$t[15]\n";
+		print OT "SpecimenLocation\t$t[15]\n";
 #		if ($t[14]=~/样本来源/){print OT "Sampling_Location\t\n";}
 #		else{print OT "Sampling_Location\t未提供\n";}
 #		print OT "Sampling_Date\t$t[0]\n";
-		print OT "Specimen_Received_Date\t$t[1]\n";
-		print OT "Fam_History\t不确定\n";
-		print OT "Nuc_Iso_Date\t$t[30]\n";
-		print OT "Nuc_Iso_Type\t$t[18]\n";
+		print OT "SpecimenReceivedDate\t$t[1]\n";
+		print OT "FamilyHistory\t不确定\n";
+		print OT "NucIsoDate\t$t[30]\n";
+		print OT "NucIsoType\t$t[18]\n";
 		$t[24]=~s/whole blood//;
-		print OT "Nuc_Iso_Amount\t$t[24]\n";
-		print OT "Nuc_Vol\t100\n";
+		print OT "NucIsoAmount\t$t[24]\n";
+		print OT "NucVol\t100\n";
 		my $nuc_con=($t[26]/100);
-		print OT "Nuc_Con\t$nuc_con\n";
-		print OT "Nuc_Int_Evaluation\t好\n";
-		print OT "Lib_Date\t$t[39]\n";
-		print OT "Lib_Nuc_Amount\t$t[33]\n";
-		print OT "Lib_Con\t$t[37]\n";
-		print OT "Lib_Vol\t40\n";
-		print OT "Insert_Size\t380\n";
-#		print OT "Analysis_Date\t$today\n";
+		print OT "NucCon\t$nuc_con\n";
+		print OT "NucInt_Evaluation\t好\n";
+		print OT "LibDate\t$t[39]\n";
+		print OT "LibNucAmount\t$t[33]\n";
+		print OT "LibCon\t$t[37]\n";
+		print OT "LibVol\t40\n";
+		print OT "InsertSize\t380\n";
 		my @date=split/\//,$t[43];
 		$date[-1]=$date[-1]+2;
 		my $report_date=join "/",@date;
-		print OT "Analysis_Date\t$report_date\n";
+		print OT "AnalysisDate\t$report_date\n";
 	}
 	print "$t[8] 's tsv is done!\n";
 	close OT;
