@@ -19,7 +19,7 @@ while(<IN>){
 	my $gz_name="$_"."*_R1*.gz";
 	my $gz_path='NA';
 	$gz_path=`find $path -name $gz_name`;
-	chomp $gz_path;
+	chomp $gz_path;$gz_path=~s/\n/\t/;
 #	$hash{$_}=$gz_path;
 #	my $lines=0;
 #	$lines=`zcat $gz_path |wc -l`; 
