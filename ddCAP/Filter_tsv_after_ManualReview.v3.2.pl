@@ -61,7 +61,7 @@ while(<LST>){
 		if(exists $hash_id{$f[0]}){$template="oncoaim_lung_CN10";}
 		$fusion=$fusion1;
 	}
-	elsif($f[1]=~/ddCAP(\_?)v2/i || $f[1]=~/ddCAP(\_?)ctDNA/i){
+	elsif($f[1]=~/ddCAP(\_?)v2/i || $f[1]=~/ddCAP(\_?)ctDNA/i || $f[1]=~/ddCAP(\_?)v3/i){
 		$template="plasaim_lung_CN";
 		if($f[0]=~/AKM/){
 			$template="akm_plasaim_lung_CN";
