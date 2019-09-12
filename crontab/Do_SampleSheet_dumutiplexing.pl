@@ -30,6 +30,7 @@ while(<IN>){
 	if ($_=~/(D\d+)\t([A-Z]{8})\t(\d+N)\t(N{12})/){push @D8UMI,$a[2]; $hash_d8umi{$a[2]}=$a[2].','.$a[2].',,,'.$1.','.$2.','.$3.','.$4.',,';}
 	elsif($_=~/(D\d+)\t([A-Z]{8})\t(D\d+)\t([A-Z]{8})/){push @D8D8,$a[2]; $hash_d8d8{$a[2]}=$a[2].','.$a[2].',,,'.$1.','.$2.','.$3.','.$4.',,';}
 	elsif($_=~/(SGIr53\sIndex\s\d+)\t([A-Z]{6})/){push @I6I0,$a[2]; $hash_i6i0{$a[2]}=$a[2].','.$a[2].',,,'.$1.','.$2.',,,,';}
+	elsif($_=~/(GG.+)\t([A-Z]{8})\t(GG.+)\t([A-Z]{8})/){push @D8D8,$a[2]; $hash_d8d8{$a[2]}=$a[2].','.$a[2].',,,'.$1.','.$2.','.$3.','.$4.',,';}
 	else{print "ERROR: Cannot recognize index, please check input: $_\n"}
 }close IN;
 

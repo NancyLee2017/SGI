@@ -80,7 +80,7 @@ if [ -f "$Log" ];then
 		do
 			Path1="$Monitor/$folder"
 			Path2="$Seqstore/$folder"
-			SeqDate=`echo $Diff | cut -d _ -f 1`
+			SeqDate=`echo $folder | cut -d _ -f 1`
 			Sequencer=`echo $Seqstore | cut -d / -f 4 | sed 's/_//' `
 
 			if [ ! -d "$Seqstore/$folder" ];then
@@ -127,9 +127,8 @@ if [ -f "$Log" ];then
 						cd $Seqstore/$folder
 						if [ `ls -1 $Path2 |grep 'ACE' |wc -l ` gt 1 ];then
 							echo "There are ACE samples in $Path2"	
-						else
-							perl /data/home/hongyanli/script/crontab/sequencer_info_analysis.pl $Input $Path2
 						fi
+						perl /data/home/hongyanli/script/crontab/sequencer_info_analysis.pl $Input $Path2
 					fi
 				else
 					continue

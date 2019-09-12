@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/perl 
 use utf8;
 die "perl $0 <sumup.lines> <id.list> <pipeline>\n" unless (@ARGV ==3);
 

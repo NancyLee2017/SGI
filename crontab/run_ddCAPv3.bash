@@ -25,11 +25,27 @@ function CheckSampleSheet(){
 		fi
 		return 1
 	else
-		echo "$1/samples_file_${Pipeline}.txt not exist!"
+		echo "Warning: $1/samples_file_${Pipeline}.txt not exist!"
 		return 0
 	fi
 }
 
+function CheckTSV(){
+	if [ `ls $2/*tsv |wc -l` -gt 0 ];then
+                echo "$2/clinical info tsv exist"
+                return 1
+        else
+                if [ -f $1/sumup.line ];then
+                        cp $1/sumup.line $2
+			cd $2
+			perl /home/hongyanli/script/crontab/sample_info_generator_crontab.pl $2/sumup.line $2/id_${Pipeline}.list $Pipeline
+		else
+			echo "$1/sumup.line not exist"
+			echo "Warning: $2/clinical info tsv not exist"
+		fi
+		return 0
+	fi
+}
 
 Sequencer=`echo $Monitor | cut -d / -f 4 | sed 's/_//' `
 Log="$Workspace/dir_${Sequencer}.log"
@@ -51,7 +67,9 @@ else
 fi
 
 if [[ $Diff ]];then
-	echo "Detected new folder: $Diff "
+	echo "Detected new folder: "
+	echo "$Diff "
+	echo
 	for folder in $Diff
 	do
 		DataPath="$Monitor/$folder"
@@ -61,6 +79,7 @@ if [[ $Diff ]];then
 			mkdir $AnalysisDir
 		fi
 		cp /home/tinayuan/Workspace/CLS/ddCAPctDNA_2019/190817_nextseq03_PE148/luigi.cfg $AnalysisDir
+		CheckTSV $DataPath $AnalysisDir
 		CheckSampleSheet $DataPath $AnalysisDir
 		if [ $? -eq 1 ];then
 			cd $AnalysisDir
@@ -73,6 +92,7 @@ if [[ $Diff ]];then
 				echo "$folder" >>$Log
 			fi
 		fi
+	echo
 	done
 	cat $Log |sort >$Workspace/dir.log.sort
 	cp $Workspace/dir.log.sort $Log

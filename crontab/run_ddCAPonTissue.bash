@@ -36,7 +36,7 @@ function CheckTSV(){
 		if [ -f $1/sumup.line ];then
 			cp $1/sumup.line $2
 			cd $2
-			perl /data/home/hongyanli/script/crontab/sample_info_generator_crontab.pl $2/sumup.line id_${Pipeline}.list $Pipelin
+			perl /data/home/hongyanli/script/crontab/sample_info_generator_crontab.pl sumup.line id_${Pipeline}.list $Pipelin
 		else
 			echo "Warning:$1/sumup.line not exist"
 		fi
